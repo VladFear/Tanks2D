@@ -4,7 +4,7 @@ int Window::init()
 {
 	if (0 != SDL_Init(SDL_INIT_EVERYTHING))
 	{
-		std::cout << "SDL could not initialize! SDL Error: " << SDL_GetError( ) << std::endl;
+		std::cerr << "SDL could not initialize! SDL Error: " << SDL_GetError( ) << "\n";
 		return 1;
 	}
 
@@ -12,14 +12,14 @@ int Window::init()
 			SDL_WINDOWPOS_CENTERED, _width, _height, 0);
 	if (nullptr == _window )
 	{
-		std::cout << "SDL could not initialize window! SDL Error: " << SDL_GetError( ) << std::endl;
+		std::cerr << "SDL could not initialize window! SDL Error: " << SDL_GetError( ) << "\n";
 		return 2;
 	}
 
 	_renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
-	if (nullptr == _renderer)
+	if (!_renderer)
 	{
-		std::cout << "SDL could not initialize window! SDL Error: " << SDL_GetError( ) << std::endl;
+		std::cerr << "SDL could not initialize window! SDL Error: " << SDL_GetError( ) << "\n";
 		return 3;
 	}
 

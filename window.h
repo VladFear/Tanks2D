@@ -6,10 +6,11 @@
 
 #include <SDL2/SDL.h>
 
+#include "gameobject.h"
+
 class Window
 {
 private:
-	// SDL Block
 	SDL_Window* _window = nullptr;
 	SDL_Renderer* _renderer = nullptr;
 
@@ -17,6 +18,8 @@ private:
 	bool _closed = true;
 	int _height = 600;
 	int _width = 800;
+
+	friend class GameObject;
 
 private:
 	int init();

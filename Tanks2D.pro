@@ -6,7 +6,9 @@ CONFIG -= qt
 LIBS += -lSDL2
 
 SOURCES += main.cpp \
-    window.cpp
+    window.cpp \
+    gameobject.cpp
 
 HEADERS += \
-    window.h
+    window.h \
+    gameobject.h
