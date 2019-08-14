@@ -3,23 +3,20 @@
 
 #include <string>
 #include <iostream>
-
 #include <SDL2/SDL.h>
 
 #include "gameobject.h"
 
-class Window
+class Window : public GameObject
 {
 private:
-	SDL_Window* _window = nullptr;
+	SDL_Window* sdl_window = nullptr;
 	SDL_Renderer* _renderer = nullptr;
 
 	std::string _title;
 	bool _closed = true;
 	int _height = 600;
 	int _width = 800;
-
-	friend class GameObject;
 
 private:
 	int init();
@@ -28,7 +25,8 @@ public:
 	Window(std::string title, int width, int height);
 	~Window();
 	inline bool isClosed() { return _closed; }
-	void pollEvents();
+	inline SDL_Renderer* getRenderer() const { return _renderer; }
+	void pollEvents(const SDL_Event& e) override;
 	void clear() const;
 };
 

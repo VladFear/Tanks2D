@@ -4,21 +4,22 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-#include "window.h"
+class Window;
 
 class GameObject
 {
 private:
-	SDL_Window* _window = nullptr;
 
 private:
 	bool init();
 
 public:
-	GameObject(SDL_Window* window);
-	~GameObject();
+	GameObject(Window* window);
+	virtual ~GameObject();
+	virtual void pollEvents(const SDL_Event& e) = 0;
 
 protected:
+	Window* _window = nullptr;
 };
 
 #endif // GAMEOBJECT_H
