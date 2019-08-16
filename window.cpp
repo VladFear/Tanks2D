@@ -27,7 +27,7 @@ int Window::init()
 }
 
 Window::Window(std::string title, int width, int height)
-	: GameObject(this), _title(title), _width(width), _height(height)
+	: GameObject(this), _title(title), _height(height), _width(width)
 {
 	if (0 != init())
 	{

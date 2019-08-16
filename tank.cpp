@@ -17,21 +17,12 @@ Tank::Tank(Window *window) : GameObject(window)
 }
 
 Tank::Tank(Window *window, int x, int y, int w, int h, std::string _path)
-	: GameObject(window), _x(x), _y(y), _width(w), _height(h)
+	: GameObject(window), _x(x), _y(y), _height(h), _width(w)
 {
 	if (init())
 	{
 		std::string path = "../Tanks2D/" + _path;
-		auto surface = IMG_Load(path.c_str());
-		if (!surface)
-			std::cerr << "Failed to create surface!\n";
-		else
-		{
-			_texture = SDL_CreateTextureFromSurface(_window->getRenderer(), surface);
-			if (!_texture)
-				std::cerr << "Failed to create texture from surface!\n";
-		}
-		SDL_FreeSurface(surface);
+		_texture = TextureManager::loadTexture(path, window->getRenderer());
 	}
 }
 
@@ -46,7 +37,7 @@ void Tank::draw() const
 	if (!_texture)
 		return;
 
-	SDL_Rect rect = { _x, _y, _width, _height };
+	SDL_Rect rect = { static_cast<int>(_x), static_cast<int>(_y), _width, _height };
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
 	SDL_RenderCopyEx(_window->getRenderer(), _texture, nullptr, &rect, _angle + 90.0, nullptr, flip);
 }
@@ -82,7 +73,6 @@ void Tank::pollEvents(const SDL_Event& e)
 			switch (e.key.keysym.sym)
 			{
 				case SDLK_w:
-					riding = false;
 				case SDLK_s:
 					riding = false;
 					break;
@@ -97,11 +87,6 @@ void Tank::pollEvents(const SDL_Event& e)
 	}
 }
 
-void Tank::turn(const int a)
-{
-	_angle += (a % 360);
-}
-
 void Tank::update()
 {
 	const double radians = _angle * M_PI / 180.0;
@@ -113,8 +98,8 @@ void Tank::update()
 	}
 	else
 	{
-		dx *= 0.98;
-		dy *= 0.98;
+		dx *= 0.93;
+		dy *= 0.93;
 	}
 
 	_x += dx * forward;

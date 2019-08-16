@@ -8,11 +8,13 @@ LIBS += -lSDL2 -lSDL2_image
 SOURCES += main.cpp \
     window.cpp \
     gameobject.cpp \
-    tank.cpp
+    tank.cpp \
+    texturemanager.cpp
 
 HEADERS += \
     window.h \
     gameobject.h \
-    tank.h
+    tank.h \
+    texturemanager.h
 
 RESOURCES +=

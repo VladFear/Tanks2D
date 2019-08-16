@@ -15,7 +15,7 @@ private:
 
 	std::string _title;
 	bool _closed = true;
-	int _height = 600;
+	int _height = 640;
 	int _width = 800;
 
 private:
