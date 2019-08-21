@@ -3,6 +3,7 @@
 #include "window.h"
 #include "tank.h"
 #include "gameobject.h"
+#include "map.h"
 
 void pollEvents(std::vector<GameObject*>& vec)
 {
@@ -23,7 +24,9 @@ int main()
 	int frame_time = 0;
 
 	Window window("Test", 800, 640);
-	Tank tank(&window, 0, 0, 50, 50, "images/tank.png");
+	Map map;
+	Tank tank(0, 0, 50, 50, "images/tank.png");
+
 	std::vector<GameObject*> vec;
 	vec.push_back(&window);
 	vec.push_back(&tank);
@@ -33,6 +36,7 @@ int main()
 		frame_start = SDL_GetTicks();
 
 		pollEvents(vec);
+		map.drawMap();
 		tank.update();
 		tank.draw();
 		window.clear();

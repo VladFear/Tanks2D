@@ -30,8 +30,8 @@ private:
 	bool init();
 
 public:
-	Tank(Window* window);
-	Tank(Window* window, int x, int y, int w, int h, std::string path);
+	Tank();
+	Tank(int x, int y, int w, int h, std::string path);
 	~Tank();
 	inline void turn(const int a) { _angle += (a % 360); }
 	void draw() const;

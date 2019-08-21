@@ -11,18 +11,18 @@ bool Tank::init()
 	return true;
 }
 
-Tank::Tank(Window *window) : GameObject(window)
+Tank::Tank() : GameObject()
 {
 
 }
 
-Tank::Tank(Window *window, int x, int y, int w, int h, std::string _path)
-	: GameObject(window), _x(x), _y(y), _height(h), _width(w)
+Tank::Tank(int x, int y, int w, int h, std::string _path)
+	: _x(x), _y(y), _height(h), _width(w)
 {
 	if (init())
 	{
 		std::string path = "../Tanks2D/" + _path;
-		_texture = TextureManager::loadTexture(path, window->getRenderer());
+		_texture = TextureManager::loadTexture(path);
 	}
 }
 
@@ -39,7 +39,7 @@ void Tank::draw() const
 
 	SDL_Rect rect = { static_cast<int>(_x), static_cast<int>(_y), _width, _height };
 	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	SDL_RenderCopyEx(_window->getRenderer(), _texture, nullptr, &rect, _angle + 90.0, nullptr, flip);
+	SDL_RenderCopyEx(Window::_renderer, _texture, nullptr, &rect, _angle + 90.0, nullptr, flip);
 }
 
 void Tank::pollEvents(const SDL_Event& e)

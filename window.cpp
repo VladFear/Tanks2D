@@ -1,5 +1,7 @@
 #include "window.h"
 
+SDL_Renderer* Window::_renderer = nullptr;
+
 int Window::init()
 {
 	if (0 != SDL_Init(SDL_INIT_EVERYTHING))
@@ -27,7 +29,7 @@ int Window::init()
 }
 
 Window::Window(std::string title, int width, int height)
-	: GameObject(this), _title(title), _height(height), _width(width)
+	: GameObject(), _title(title), _height(height), _width(width)
 {
 	if (0 != init())
 	{

@@ -11,7 +11,6 @@ class Window : public GameObject
 {
 private:
 	SDL_Window* sdl_window = nullptr;
-	SDL_Renderer* _renderer = nullptr;
 
 	std::string _title;
 	bool _closed = true;
@@ -22,12 +21,15 @@ private:
 	int init();
 
 public:
+	static SDL_Renderer* _renderer;
+
+public:
 	Window(std::string title, int width, int height);
 	~Window();
 	inline bool isClosed() { return _closed; }
-	inline SDL_Renderer* getRenderer() const { return _renderer; }
 	void pollEvents(const SDL_Event& e) override;
 	void clear() const;
+
 };
 
 #endif // WINDOW_H

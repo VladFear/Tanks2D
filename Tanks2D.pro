@@ -9,12 +9,14 @@ SOURCES += main.cpp \
     window.cpp \
     gameobject.cpp \
     tank.cpp \
-    texturemanager.cpp
+    texturemanager.cpp \
+    map.cpp
 
 HEADERS += \
     window.h \
     gameobject.h \
     tank.h \
-    texturemanager.h
+    texturemanager.h \
+    map.h
 
 RESOURCES +=
