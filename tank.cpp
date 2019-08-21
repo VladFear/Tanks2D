@@ -1,35 +1,23 @@
 #include "tank.h"
 
-bool Tank::init()
-{
-	if (IMG_INIT_PNG != IMG_Init(IMG_INIT_PNG))
-	{
-		std::cerr << "Failed to load image library!\n";
-		return false;
-	}
-
-	return true;
-}
-
 Tank::Tank() : GameObject()
 {
 
 }
 
-Tank::Tank(int x, int y, int w, int h, std::string _path)
+Tank::Tank(const int x, const int y, const int w, const int h, const std::string &_path)
 	: _x(x), _y(y), _height(h), _width(w)
 {
-	if (init())
-	{
-		std::string path = "../Tanks2D/" + _path;
-		_texture = TextureManager::loadTexture(path);
-	}
+	std::string path = "../Tanks2D/" + _path;
+	_texture = TextureManager::loadTexture(path);
+
+	if (!_texture)
+		std::cerr << "Failed to load tank texture!\n";
 }
 
 Tank::~Tank()
 {
 	SDL_DestroyTexture(_texture);
-	IMG_Quit();
 }
 
 void Tank::draw() const
@@ -51,11 +39,11 @@ void Tank::pollEvents(const SDL_Event& e)
 			{
 				case SDLK_w:
 					riding = true;
-					forward = 1;
+					direction = Direction::FORWARD;
 					break;
 				case SDLK_s:
 					riding = true;
-					forward = -1;
+					direction = Direction::BACKWARD;
 					break;
 				case SDLK_a:
 					turn(-ROTATION_SPEED);
@@ -102,6 +90,11 @@ void Tank::update()
 		dy *= 0.93;
 	}
 
-	_x += dx * forward;
-	_y += dy * forward;
+	_x += dx * static_cast<int>(direction);
+	_y += dy * static_cast<int>(direction);
+
+//	std::cout << "x" << _x << "\n";
+//	std::cout << "y" << _y << "\n";
+//	std::cout << static_cast<int>(std::floor(_x) / 32) << " x \n";
+//	std::cout << static_cast<int>(std::floor(_y) / 32) << " y \n";
 }

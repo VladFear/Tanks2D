@@ -5,7 +5,7 @@
 #include "gameobject.h"
 #include "map.h"
 
-void pollEvents(std::vector<GameObject*>& vec)
+void pollEvents(const std::vector<GameObject*>& vec)
 {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
@@ -17,19 +17,21 @@ void pollEvents(std::vector<GameObject*>& vec)
 
 int main()
 {
-	const int FPS = 60;
-	const int frame_delay = 1000 / FPS;
+	constexpr int FPS = 60;
+	constexpr int frame_delay = 1000 / FPS;
 
 	Uint32 frame_start = 0;
 	int frame_time = 0;
 
 	Window window("Test", 800, 640);
-	Map map;
-	Tank tank(0, 0, 50, 50, "images/tank.png");
+	Map map();
+//	Tank tank1(20, 20, 54, 72, "images/enemy.png");
+	Tank tank(0, 0, 50, 50, "images/tank1.png");
 
 	std::vector<GameObject*> vec;
 	vec.push_back(&window);
 	vec.push_back(&tank);
+//	vec.push_back(&tank1);
 
 	while (!window.isClosed())
 	{
@@ -39,6 +41,8 @@ int main()
 		map.drawMap();
 		tank.update();
 		tank.draw();
+//		tank1.update();
+//		tank1.draw();
 		window.clear();
 
 		frame_time = SDL_GetTicks() - frame_start;

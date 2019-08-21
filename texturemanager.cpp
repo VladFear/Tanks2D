@@ -1,6 +1,6 @@
 #include "texturemanager.h"
 
-SDL_Texture *TextureManager::loadTexture(const std::string path)
+SDL_Texture *TextureManager::loadTexture(const std::string& path)
 {
 	SDL_Surface* surface = IMG_Load(path.c_str());
 	if (!surface)
