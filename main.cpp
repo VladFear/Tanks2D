@@ -23,15 +23,13 @@ int main()
 	Uint32 frame_start = 0;
 	int frame_time = 0;
 
-	Window window("Test", 800, 640);
-	Map map();
-//	Tank tank1(20, 20, 54, 72, "images/enemy.png");
-	Tank tank(0, 0, 50, 50, "images/tank1.png");
+    Window window("Tanks2D", 800, 640);
+    Map map;
+    Tank tank(100, 50, 40, 54, "images/tank.png");
 
 	std::vector<GameObject*> vec;
 	vec.push_back(&window);
 	vec.push_back(&tank);
-//	vec.push_back(&tank1);
 
 	while (!window.isClosed())
 	{
@@ -41,14 +39,13 @@ int main()
 		map.drawMap();
 		tank.update();
 		tank.draw();
-//		tank1.update();
-//		tank1.draw();
 		window.clear();
 
 		frame_time = SDL_GetTicks() - frame_start;
 
-		if (frame_delay > frame_time)
-			SDL_Delay(frame_delay - frame_time);
+        if (frame_delay > frame_time)
+            SDL_Delay(frame_delay - frame_time);
+
 	}
 
 	return 0;
