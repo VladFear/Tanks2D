@@ -27,9 +27,16 @@ void Window::init()
 
 	if (IMG_INIT_PNG != IMG_Init(IMG_INIT_PNG))
 	{
-		std::cerr << "Failed to load image library!\n";
+        std::cerr << "Failed to load image library! IMG Error: " << IMG_GetError() << "\n";
 		exit(EXIT_FAILURE);
 	}
+
+    if (-1 == TTF_Init())
+    {
+        std::cerr << "Failed to load ttf library! SDL_ttf Error: " << TTF_GetError() << "\n";
+        exit(EXIT_FAILURE);
+    }
+
 }
 
 Window::Window(const std::string &title, const int width, const int height)

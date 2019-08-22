@@ -92,9 +92,4 @@ void Tank::update()
 
 	_x += dx * static_cast<int>(direction);
 	_y += dy * static_cast<int>(direction);
-
-//	std::cout << "x" << _x << "\n";
-//	std::cout << "y" << _y << "\n";
-//	std::cout << static_cast<int>(std::floor(_x) / 32) << " x \n";
-//	std::cout << static_cast<int>(std::floor(_y) / 32) << " y \n";
 }
