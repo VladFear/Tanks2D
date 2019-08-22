@@ -1,11 +1,13 @@
 #include "window.h"
 
-int Window::init()
+SDL_Renderer* Window::_renderer = nullptr;
+
+void Window::init()
 {
 	if (0 != SDL_Init(SDL_INIT_EVERYTHING))
 	{
 		std::cerr << "SDL could not initialize! SDL Error: " << SDL_GetError( ) << "\n";
-		return 1;
+		exit(EXIT_FAILURE);
 	}
 
 	sdl_window = SDL_CreateWindow(_title.c_str(), SDL_WINDOWPOS_CENTERED,
@@ -13,35 +15,34 @@ int Window::init()
 	if (nullptr == sdl_window)
 	{
 		std::cerr << "SDL could not initialize window! SDL Error: " << SDL_GetError( ) << "\n";
-		return 2;
+		exit(EXIT_FAILURE);
 	}
 
 	_renderer = SDL_CreateRenderer(sdl_window, -1, SDL_RENDERER_ACCELERATED);
 	if (!_renderer)
 	{
 		std::cerr << "SDL could not initialize window! SDL Error: " << SDL_GetError( ) << "\n";
-		return 3;
+		exit(EXIT_FAILURE);
 	}
 
-	return 0;
+	if (IMG_INIT_PNG != IMG_Init(IMG_INIT_PNG))
+	{
+		std::cerr << "Failed to load image library!\n";
+		exit(EXIT_FAILURE);
+	}
 }
 
-Window::Window(std::string title, int width, int height)
-	: GameObject(this), _title(title), _width(width), _height(height)
+Window::Window(const std::string &title, const int width, const int height)
+	: GameObject(), _title(title), _height(height), _width(width)
 {
-	if (0 != init())
-	{
-		std::cout << "Could not init SDL window!" << std::endl;
-		_closed = true;
-	}
-
-	_closed = false;
+	init();
 }
 
 Window::~Window()
 {
 	SDL_DestroyRenderer(_renderer);
 	SDL_DestroyWindow(sdl_window);
+	IMG_Quit();
 	SDL_Quit();
 }
 

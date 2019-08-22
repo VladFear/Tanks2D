@@ -3,16 +3,20 @@ CONFIG += console c++11
 CONFIG -= app_bundle
 CONFIG -= qt
 
-LIBS += -lSDL2 -lSDL2_image -lpthread
+LIBS += -lSDL2 -lSDL2_image
 
 SOURCES += main.cpp \
     window.cpp \
     gameobject.cpp \
-    tank.cpp
+    tank.cpp \
+    texturemanager.cpp \
+    map.cpp
 
 HEADERS += \
     window.h \
     gameobject.h \
-    tank.h
+    tank.h \
+    texturemanager.h \
+    map.h
 
 RESOURCES +=

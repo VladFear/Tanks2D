@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 #include "gameobject.h"
 
@@ -11,23 +12,25 @@ class Window : public GameObject
 {
 private:
 	SDL_Window* sdl_window = nullptr;
-	SDL_Renderer* _renderer = nullptr;
 
 	std::string _title;
-	bool _closed = true;
-	int _height = 600;
+	bool _closed = false;
+	int _height = 640;
 	int _width = 800;
 
 private:
-	int init();
+	void init();
 
 public:
-	Window(std::string title, int width, int height);
+	static SDL_Renderer* _renderer;
+
+public:
+	explicit Window(const std::string& title, const int width, const int height);
 	~Window();
-	inline bool isClosed() { return _closed; }
-	inline SDL_Renderer* getRenderer() const { return _renderer; }
+	inline bool isClosed() const { return _closed; }
 	void pollEvents(const SDL_Event& e) override;
 	void clear() const;
+
 };
 
 #endif // WINDOW_H

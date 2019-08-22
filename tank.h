@@ -4,14 +4,21 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <string>
-#include <math.h>
+#include <cmath>
 
 #include "gameobject.h"
 #include "window.h"
+#include "texturemanager.h"
 
 class Tank : public GameObject
 {
 private:
+	enum class Direction : int
+	{
+		FORWARD = 1,
+		BACKWARD = -1
+	};
+
 	SDL_Texture* _texture = nullptr;
 	double _x = 0;
 	double _y = 0;
@@ -20,22 +27,19 @@ private:
 	int _height = 0;
 	int _width = 0;
 	double _angle = 0;
-	int forward = 1;
+	Direction direction = Direction::FORWARD;
 	bool riding = false;
-	const float SPEED = 0.1;
-	const int ROTATION_SPEED = 4;
-
-private:
-	bool init();
+	const float SPEED = 1;
+	const int ROTATION_SPEED = 2;
 
 public:
-	Tank(Window* window);
-	Tank(Window* window, int x, int y, int w, int h, std::string path);
+	explicit Tank();
+	Tank(const int x, const int y, const int w, const int h, const std::string& path);
 	~Tank();
+	inline void turn(const int a) { _angle += (a % 360); }
 	void draw() const;
-	void pollEvents(const SDL_Event& e) override;
-	void turn(const int a);
 	void update();
+	void pollEvents(const SDL_Event& e) override;
 };
 
 #endif // TANK_H
