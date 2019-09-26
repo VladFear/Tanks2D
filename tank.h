@@ -5,10 +5,13 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 #include <cmath>
+#include <vector>
 
 #include "gameobject.h"
 #include "window.h"
 #include "texturemanager.h"
+
+#define DEBUG 0
 
 class Tank : public GameObject
 {
@@ -20,8 +23,7 @@ private:
 	};
 
 	SDL_Texture* _texture = nullptr;
-	double _x = 0;
-	double _y = 0;
+    std::vector<SDL_Point> points;
 	double dx = 0;
 	double dy = 0;
 	int _height = 0;

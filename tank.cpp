@@ -6,13 +6,22 @@ Tank::Tank() : GameObject()
 }
 
 Tank::Tank(const int x, const int y, const int w, const int h, const std::string &_path)
-	: _x(x), _y(y), _height(h), _width(w)
+    : _height(h), _width(w)
 {
 	std::string path = "../Tanks2D/" + _path;
 	_texture = TextureManager::loadTexture(path);
 
 	if (!_texture)
-		std::cerr << "Failed to load tank texture!\n";
+        std::cerr << "Failed to load tank texture!\n";
+
+    SDL_Point top_left { x, y };
+    SDL_Point top_right { x + _width, y };
+    SDL_Point bot_right { x + _width, y + _height };
+    SDL_Point bot_left { x, y + _height };
+    points.push_back(top_left);
+    points.push_back(top_right);
+    points.push_back(bot_right);
+    points.push_back(bot_left);
 }
 
 Tank::~Tank()
@@ -25,9 +34,9 @@ void Tank::draw() const
 	if (!_texture)
 		return;
 
-	SDL_Rect rect = { static_cast<int>(_x), static_cast<int>(_y), _width, _height };
-	SDL_RendererFlip flip = SDL_FLIP_NONE;
-	SDL_RenderCopyEx(Window::_renderer, _texture, nullptr, &rect, _angle + 90.0, nullptr, flip);
+    SDL_Rect rect = { static_cast<int>(points[0].x), static_cast<int>(points[0].y), _width, _height };
+    SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
+    SDL_RenderCopyEx(Window::_renderer, _texture, nullptr, &rect, _angle, nullptr, flip);
 }
 
 void Tank::pollEvents(const SDL_Event& e)
@@ -77,7 +86,7 @@ void Tank::pollEvents(const SDL_Event& e)
 
 void Tank::update()
 {
-	const double radians = _angle * M_PI / 180.0;
+    const double radians = (_angle + 90) * M_PI / 180.0;
 
 	if (riding)
 	{
@@ -90,6 +99,13 @@ void Tank::update()
 		dy *= 0.93;
 	}
 
-	_x += dx * static_cast<int>(direction);
-	_y += dy * static_cast<int>(direction);
+    points[0].x += dx * static_cast<int>(direction);
+    points[0].y += dy * static_cast<int>(direction);
+
+#ifdef DEBUG
+    std::cout << "1) " << points[0].x << " : " << points[0].y << std::endl;
+    std::cout << "2) " << points[1].x << " : " << points[1].y << std::endl;
+    std::cout << "3) " << points[2].x << " : " << points[2].y << std::endl;
+    std::cout << "4) " << points[3].x << " : " << points[3].y << std::endl;
+#endif
 }
