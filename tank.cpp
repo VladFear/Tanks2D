@@ -14,14 +14,15 @@ Tank::Tank(const int x, const int y, const int w, const int h, const std::string
 	if (!_texture)
         std::cerr << "Failed to load tank texture!\n";
 
-    SDL_Point top_left { x, y };
-    SDL_Point top_right { x + _width, y };
-    SDL_Point bot_right { x + _width, y + _height };
-    SDL_Point bot_left { x, y + _height };
+    auto top_left = std::make_pair(x, y);
+    auto top_right = std::make_pair(x + _width, y);
+    auto bot_right = std::make_pair(x + _width, y + _height);
+    auto bot_left = std::make_pair(x, y + _height);
     points.push_back(top_left);
     points.push_back(top_right);
     points.push_back(bot_right);
     points.push_back(bot_left);
+	center = std::make_pair((points[0].first + points[2].first) / 2.0, (points[0].second + points[2].second) / 2.0);
 }
 
 Tank::~Tank()
@@ -29,14 +30,40 @@ Tank::~Tank()
 	SDL_DestroyTexture(_texture);
 }
 
+void Tank::turn(const int a)
+{
+	if (_angle > 360)
+		_angle -= 360;
+
+	_angle += a;
+	radians = _angle * M_PI / 180.0;
+
+	center = std::make_pair((points[0].first + points[2].first) / 2.0, (points[0].second + points[2].second) / 2.0);
+
+	for (auto& p : points)
+	{
+		p.first -= center.first;
+		p.second -= center.second;
+
+		p.first = p.first * std::cos(radians) - p.second * std::sin(radians);
+		p.second = p.first * std::sin(radians) + p.second * std::cos(radians);
+
+		p.first += center.first;
+		p.second += center.second;
+	}
+}
+
 void Tank::draw() const
 {
-	if (!_texture)
-		return;
+	if (!_texture) return;
 
-    SDL_Rect rect = { static_cast<int>(points[0].x), static_cast<int>(points[0].y), _width, _height };
-    SDL_RendererFlip flip = SDL_FLIP_VERTICAL;
-    SDL_RenderCopyEx(Window::_renderer, _texture, nullptr, &rect, _angle, nullptr, flip);
+	SDL_Rect rect;
+	rect.x = static_cast<int>(points[0].first);
+	rect.y = static_cast<int>(points[0].second);
+	rect.w = _width;
+	rect.h = _height;
+	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	SDL_RenderCopyEx(Window::_renderer, _texture, nullptr, &rect, _angle, nullptr, flip);
 }
 
 void Tank::pollEvents(const SDL_Event& e)
@@ -86,26 +113,28 @@ void Tank::pollEvents(const SDL_Event& e)
 
 void Tank::update()
 {
-    const double radians = (_angle + 90) * M_PI / 180.0;
+//	radians = (_angle - 90) * M_PI / 180.0;
 
-	if (riding)
-	{
-		dx = std::cos(radians) * SPEED;
-		dy = std::sin(radians) * SPEED;
-	}
-	else
-	{
-		dx *= 0.93;
-		dy *= 0.93;
-	}
+//	if (riding)
+//	{
+//		dx = std::cos(radians) * SPEED;
+//		dy = std::sin(radians) * SPEED;
+//	}
+//	else
+//	{
+//		dx *= 0.93;
+//		dy *= 0.93;
+//	}
 
-    points[0].x += dx * static_cast<int>(direction);
-    points[0].y += dy * static_cast<int>(direction);
+//	points[0].first += dx * static_cast<int>(direction);
+//	points[0].second += dy * static_cast<int>(direction);
 
 #ifdef DEBUG
-    std::cout << "1) " << points[0].x << " : " << points[0].y << std::endl;
-    std::cout << "2) " << points[1].x << " : " << points[1].y << std::endl;
-    std::cout << "3) " << points[2].x << " : " << points[2].y << std::endl;
-    std::cout << "4) " << points[3].x << " : " << points[3].y << std::endl;
+	std::cout << radians << std::endl;
+	std::cout << "1) " << points[0].first << " : " << points[0].second << std::endl;
+	std::cout << "2) " << points[1].first << " : " << points[1].second << std::endl;
+	std::cout << "3) " << points[2].first << " : " << points[2].second << std::endl;
+	std::cout << "4) " << points[3].first << " : " << points[3].second << std::endl;
+	std::cout << "center x: " << center.first << " y: " << center.second << std::endl;
 #endif
 }

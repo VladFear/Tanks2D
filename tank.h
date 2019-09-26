@@ -6,6 +6,7 @@
 #include <string>
 #include <cmath>
 #include <vector>
+#include <tuple>
 
 #include "gameobject.h"
 #include "window.h"
@@ -23,7 +24,9 @@ private:
 	};
 
 	SDL_Texture* _texture = nullptr;
-    std::vector<SDL_Point> points;
+    std::vector<std::pair<double, double>> points;
+	std::pair<double, double> center;
+	double radians = 0;
 	double dx = 0;
 	double dy = 0;
 	int _height = 0;
@@ -38,7 +41,7 @@ public:
 	explicit Tank();
 	Tank(const int x, const int y, const int w, const int h, const std::string& path);
 	~Tank();
-	inline void turn(const int a) { _angle += (a % 360); }
+    void turn(const int a);
 	void draw() const;
 	void update();
 	void pollEvents(const SDL_Event& e) override;

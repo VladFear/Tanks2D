@@ -21,7 +21,7 @@ int main()
 {
     Window window("Tanks2D", 800, 640);
     Map map;
-    Tank tank(0, 0, 32, 48, "images/tank.png");
+	Tank tank(10, 10, 32, 48, "images/tank.png");
 
     std::string font_path = "../Tanks2D/font.ttf";
 	TTF_Font* font = TTF_OpenFont(font_path.c_str(), 30);
